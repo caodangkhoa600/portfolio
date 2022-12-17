@@ -4,7 +4,7 @@ import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
-function Block({ width, height, onPage = false, idx, position }) {
+function Block({ width, height, onPage = false, itemIdx, position }) {
   const { setItems } = useItemContext();
   const { layout, selectedItem, setSelectedItem } = usePropertyContext();
 
@@ -34,7 +34,6 @@ function Block({ width, height, onPage = false, idx, position }) {
 
   const handleClick = () => {
     const newBlock = {
-      idx,
       type: ItemTypes.Block,
       properties: { ...DefaultItemData.Block },
       position: { x: 0, y: 0 },
@@ -48,14 +47,14 @@ function Block({ width, height, onPage = false, idx, position }) {
   };
 
   const handleOnPageClick = () => {
-    setSelectedItem(idx);
+    setSelectedItem(itemIdx);
   };
 
   const handleDrag = (e, ui) => {
     setItems((prev) => {
-      prev[idx].position = {
-        x: ui.x / layout.cellWidth,
-        y: ui.y / layout.cellHeight,
+      prev[itemIdx].position = {
+        x: position.x + ui.x / layout.cellWidth,
+        y: position.y + ui.y / layout.cellHeight,
       };
       return prev;
     });
@@ -70,7 +69,7 @@ function Block({ width, height, onPage = false, idx, position }) {
     >
       <div
         className="block"
-        style={{ ...dragStyle, ...(idx === selectedItem ? selectedStyle : {}) }}
+        style={{ ...dragStyle, ...(itemIdx === selectedItem ? selectedStyle : {}) }}
         onClick={handleOnPageClick}
       />
     </Draggable>

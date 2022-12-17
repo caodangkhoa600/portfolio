@@ -6,9 +6,9 @@ import usePropertyContext from "../../contexts/PropertyContext";
 import Block from "../items/Block";
 import Image from "../items/Image";
 
-function getItemComponent(itemType, idx, properties, position) {
+function getItemComponent(itemType, itemIdx, properties, position) {
   const props = {
-    idx,
+    itemIdx,
     onPage: true,
     properties,
     position,

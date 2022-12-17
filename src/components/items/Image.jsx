@@ -4,7 +4,7 @@ import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
-function Image({ width, height, onPage = false, idx, position }) {
+function Image({ width, height, onPage = false, itemIdx, position }) {
   const { setItems } = useItemContext();
   const { layout, selectedItem, setSelectedItem } = usePropertyContext();
 
@@ -37,7 +37,6 @@ function Image({ width, height, onPage = false, idx, position }) {
 
   const handleClick = () => {
     const newImage = {
-      idx,
       type: ItemTypes.Image,
       properties: { ...DefaultItemData.Image },
       position: { x: 0, y: 0 },
@@ -47,14 +46,14 @@ function Image({ width, height, onPage = false, idx, position }) {
   };
 
   const handleOnPageClick = () => {
-    setSelectedItem(idx);
+    setSelectedItem(itemIdx);
   };
 
   const handleDrag = (e, ui) => {
     setItems((prev) => {
-      prev[idx].position = {
-        x: ui.x / layout.cellWidth,
-        y: ui.y / layout.cellHeight,
+      prev[itemIdx].position = {
+        x: position.x + ui.x / layout.cellWidth,
+        y: position.y + ui.y / layout.cellHeight,
       };
       return prev;
     });
@@ -69,7 +68,7 @@ function Image({ width, height, onPage = false, idx, position }) {
     >
       <div
         className="image"
-        style={{ ...dragStyle, ...(idx === selectedItem ? selectedStyle : {}) }}
+        style={{ ...dragStyle, ...(itemIdx === selectedItem ? selectedStyle : {}) }}
         onClick={handleOnPageClick}
       />
     </Draggable>
