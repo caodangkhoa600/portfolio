@@ -2,7 +2,7 @@ import React from "react";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
-function Trash() {
+function RemoveButton() {
   const { selectedItem } = usePropertyContext();
   const { setItems } = useItemContext();
 
@@ -27,9 +27,9 @@ function Trash() {
 
   return (
     <div className="trash" style={trashStyle} onClick={handleClick}>
-      Trash
+      Remove
     </div>
   );
 }
 
-export default Trash;
+export default RemoveButton;

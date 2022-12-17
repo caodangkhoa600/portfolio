@@ -3,7 +3,7 @@ import React from "react";
 import Others from "./Others";
 import Position from "./Position";
 import Size from "./Size";
-import Trash from "./Trash";
+import RemoveButton from "./RemoveButton";
 
 function PropertyCol() {
   const propertyColStyle = {
@@ -16,7 +16,7 @@ function PropertyCol() {
       <Size />
       <Position />
       <Others />
-      <Trash />
+      <RemoveButton />
     </div>
   );
 }
