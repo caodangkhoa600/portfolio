@@ -4,8 +4,8 @@ import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
 function Others() {
-  const { showingItem, setShowingItem } = usePropertyContext();
-  const { setItems } = useItemContext();
+  const { selectedItem } = usePropertyContext();
+  const { items, setItems } = useItemContext();
 
   const style = {
     margin: "10px 0px",
@@ -30,38 +30,31 @@ function Others() {
     const newData = {
       [property]: isNaN(value) ? value : +value,
     };
-    setShowingItem((prev) => ({ ...prev, data: { ...prev.data, ...newData } }));
-    setItems((prev) =>
-      prev.map((ele) => {
-        if (ele.id === showingItem.id) {
-          ele.data = { ...ele.data, ...newData };
-        }
-        return ele;
-      })
-    );
+    const oldData = items[selectedItem]?.properties;
+    items[selectedItem].properties = { ...oldData, ...newData };
+    setItems(JSON.parse(JSON.stringify(items)));
   };
 
   return (
-    <>
-      {showingItem &&
-        Object.entries(showingItem.data).map(([property, value]) => {
-          return (
-            <div key={property} style={style}>
-              <label htmlFor={`others-${property}`} style={labelStyle}>
-                {property.charAt(0).toUpperCase() + property.slice(1)}:
-              </label>
-              <input
-                id={`others-${property}`}
-                type="text"
-                name={property}
-                value={value || ""}
-                style={inputStyle}
-                onInput={handleOnInput}
-              ></input>
-            </div>
-          );
-        })}
-    </>
+    selectedItem !== -1 &&
+    items[selectedItem] &&
+    Object.entries(items[selectedItem].properties).map(([property, value]) => {
+      return (
+        <div key={property} style={style}>
+          <label htmlFor={`others-${property}`} style={labelStyle}>
+            {property.charAt(0).toUpperCase() + property.slice(1)}:
+          </label>
+          <input
+            id={`others-${property}`}
+            type="text"
+            name={property}
+            value={value || ""}
+            style={inputStyle}
+            onInput={handleOnInput}
+          ></input>
+        </div>
+      );
+    })
   );
 }
 

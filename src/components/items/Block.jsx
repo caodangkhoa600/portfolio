@@ -4,7 +4,7 @@ import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
-function Block({ width, height, onPage = false, itemIdx, position }) {
+function Block({ width, height, onPage = false, itemIdx, position, properties }) {
   const { setItems } = useItemContext();
   const { layout, selectedItem, setSelectedItem } = usePropertyContext();
 
@@ -15,7 +15,7 @@ function Block({ width, height, onPage = false, itemIdx, position }) {
     width,
     height,
     cursor: "pointer",
-    ...DefaultItemData.Block,
+    ...{ ...DefaultItemData.Block, ...properties },
   };
 
   const dragStyle = {

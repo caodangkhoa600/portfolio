@@ -4,13 +4,13 @@ import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
 function Size() {
-  const { showingItem, setShowingItem, layout } = usePropertyContext();
-  const { setItems } = useItemContext();
+  const { selectedItem } = usePropertyContext();
+  const { items, setItems } = useItemContext();
 
-  const row = showingItem?.size[0];
-  const col = showingItem?.size[1];
+  const width = items[selectedItem]?.size.width ?? -1;
+  const height = items[selectedItem]?.size.height ?? -1;
 
-  const style = {
+  const sizeStyle = {
     margin: "10px 0px",
     display: "flex",
     justifyContent: "space-between",
@@ -29,60 +29,42 @@ function Size() {
 
   const handleOnRowInput = (e) => {
     const rowVal = e.target.value;
-    setShowingItem((prev) => ({ ...prev, size: [+rowVal, prev.size[1]] }));
-    setItems((prev) =>
-      prev.map((ele) => {
-        if (ele.id === showingItem.id) {
-          ele.size = [+rowVal, ele.size[1]];
-        }
-        return ele;
-      })
-    );
+    items[selectedItem].size.width = +rowVal;
+    setItems(JSON.parse(JSON.stringify(items)));
   };
 
   const handleOnColInput = (e) => {
     const colVal = e.target.value;
-    setShowingItem((prev) => ({ ...prev, size: [prev.size[0], +colVal] }));
-    setItems((prev) =>
-      prev.map((ele) => {
-        if (ele.id === showingItem.id) {
-          ele.size = [ele.size[0], +colVal];
-        }
-        return ele;
-      })
-    );
+    items[selectedItem].size.height = +colVal;
+    setItems(JSON.parse(JSON.stringify(items)));
   };
 
   return (
-    showingItem && (
-      <div style={style}>
-        <label htmlFor="size-row" style={labelStyle}>
-          Size:
-        </label>
-        <div>
-          <input
-            type="number"
-            id="size-row"
-            min={1}
-            max={layout.numberOfRows}
-            name="size-row"
-            value={row}
-            style={inputStyle}
-            onInput={handleOnRowInput}
-          />
-          <input
-            type="number"
-            id="size-col"
-            name="size-col"
-            min={1}
-            max={layout.numberOfColumns}
-            value={col}
-            style={inputStyle}
-            onInput={handleOnColInput}
-          />
-        </div>
+    <div style={sizeStyle}>
+      <label htmlFor="size-row" style={labelStyle}>
+        Size:
+      </label>
+      <div>
+        <input
+          type="number"
+          id="size-row"
+          name="size-row"
+          value={width}
+          style={inputStyle}
+          min="1"
+          onInput={handleOnRowInput}
+        />
+        <input
+          type="number"
+          id="size-col"
+          name="size-col"
+          value={height}
+          style={inputStyle}
+          min="1"
+          onInput={handleOnColInput}
+        />
       </div>
-    )
+    </div>
   );
 }
 

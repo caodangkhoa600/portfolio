@@ -4,7 +4,7 @@ import { CELL_HEIGHT, CELL_WIDTH, NUMBER_OF_COLUMNS, NUMBER_OF_ROWS } from "../c
 import { PropertyContext } from "./PropertyContext";
 
 function PropertyProvider({ children }) {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(-1);
   const [layout, setLayout] = useState({
     numberOfRows: NUMBER_OF_ROWS,
     numberOfColumns: NUMBER_OF_COLUMNS,

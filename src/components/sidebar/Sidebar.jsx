@@ -4,8 +4,11 @@ import { Color } from "../../constants";
 import ItemsCol from "../items-col/ItemsCol";
 import LayoutCol from "../layout-col/LayoutCol";
 import PropertyCol from "../property-col/PropertyCol";
+import usePropertyContext from "../../contexts/PropertyContext";
 
 function Sidebar() {
+  const { setSelectedItem } = usePropertyContext();
+
   const [tab, setTab] = useState(0);
 
   const tabNames = ["Items", "Properties", "Layout"];
@@ -62,7 +65,10 @@ function Sidebar() {
             key={uuidv4()}
             style={{ ...buttonStyle, ...(tab === i ? buttonActiveStyle : {}) }}
             type="button"
-            onClick={() => setTab(i)}
+            onClick={() => {
+              if (i !== 1) setSelectedItem(-1);
+              setTab(i);
+            }}
           >
             {name}
           </button>

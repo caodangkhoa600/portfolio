@@ -4,20 +4,18 @@ import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
-function Image({ width, height, onPage = false, itemIdx, position, properties }) {
+function InputBlock({ width, height, onPage = false, itemIdx, position, properties }) {
   const { setItems } = useItemContext();
   const { layout, selectedItem, setSelectedItem } = usePropertyContext();
 
-  if (!width) width = layout.cellWidth * 2;
-  if (!height) height = layout.cellHeight * 2;
+  if (!width) width = layout.cellWidth * 4;
+  if (!height) height = layout.cellHeight * 1;
 
   const style = {
     width,
     height,
-    backgroundImage: `url(${properties?.source || DefaultItemData.Image.source})`,
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
+    cursor: "pointer",
+    ...{ ...DefaultItemData.Input, ...properties },
   };
 
   const dragStyle = {
@@ -26,7 +24,6 @@ function Image({ width, height, onPage = false, itemIdx, position, properties })
     position: "absolute",
     top: position?.y * layout.cellHeight || 0,
     left: position?.x * layout.cellWidth || 0,
-    borderRadius: properties?.borderRadius || DefaultItemData.Image.borderRadius,
   };
 
   const selectedStyle = {
@@ -36,13 +33,13 @@ function Image({ width, height, onPage = false, itemIdx, position, properties })
   const dragHandlers = {};
 
   const handleClick = () => {
-    const newImage = {
-      type: ItemTypes.Image,
-      properties: { ...DefaultItemData.Image },
+    const newInput = {
+      type: ItemTypes.Input,
+      properties: { ...DefaultItemData.Input },
       position: { x: 0, y: 0 },
-      size: { width: 2, height: 2 },
+      size: { width: 4, height: 1 },
     };
-    setItems((prev) => [...prev, newImage]);
+    setItems((prev) => [...prev, newInput]);
   };
 
   const handleOnPageClick = () => {
@@ -66,15 +63,15 @@ function Image({ width, height, onPage = false, itemIdx, position, properties })
       {...dragHandlers}
       onDrag={handleDrag}
     >
-      <div
-        className="image"
+      <input
         style={{ ...dragStyle, ...(itemIdx === selectedItem ? selectedStyle : {}) }}
+        value={properties.text}
         onClick={handleOnPageClick}
       />
     </Draggable>
   ) : (
-    <img className="image" style={style} src={DefaultItemData.Image.source} onClick={handleClick} />
+    <input style={style} onClick={handleClick} />
   );
 }
 
-export default Image;
+export default InputBlock;

@@ -4,10 +4,8 @@ import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
 function Position() {
-  const { selectedItem, layout } = usePropertyContext();
+  const { selectedItem } = usePropertyContext();
   const { items, setItems } = useItemContext();
-
-  console.log("hi");
 
   const row = items[selectedItem]?.position.x ?? -1;
   const col = items[selectedItem]?.position.y ?? -1;
@@ -31,18 +29,14 @@ function Position() {
 
   const handleOnRowInput = (e) => {
     const rowVal = e.target.value;
-    setItems((prev) => {
-      prev[selectedItem].position.x = +rowVal;
-      return prev;
-    });
+    items[selectedItem].position.x = +rowVal;
+    setItems(JSON.parse(JSON.stringify(items)));
   };
 
   const handleOnColInput = (e) => {
     const colVal = e.target.value;
-    setItems((prev) => {
-      prev[selectedItem].position.y = +colVal;
-      return prev;
-    });
+    items[selectedItem].position.y = +colVal;
+    setItems(JSON.parse(JSON.stringify(items)));
   };
 
   return (
@@ -55,8 +49,6 @@ function Position() {
           type="number"
           id="position-row"
           name="position-row"
-          min={0}
-          max={layout.numberOfRows - (items[selectedItem]?.size.x || 0)}
           value={row}
           style={inputStyle}
           onInput={handleOnRowInput}
@@ -65,8 +57,6 @@ function Position() {
           type="number"
           id="position-col"
           name="position-col"
-          min={0}
-          max={layout.numberOfColumns - (items[selectedItem]?.size.y || 0)}
           value={col}
           style={inputStyle}
           onInput={handleOnColInput}
