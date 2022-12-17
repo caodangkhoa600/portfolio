@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "./components/footer/Footer";
 import Page from "./components/page/Page";
 import Sidebar from "./components/sidebar/Sidebar";
 
@@ -9,10 +10,13 @@ function App() {
   };
 
   return (
-    <div className="app" style={appStyle}>
-      <Sidebar />
-      <Page />
-    </div>
+    <>
+      <div className="app" style={appStyle}>
+        <Sidebar />
+        <Page />
+      </div>
+      <Footer />
+    </>
   );
 }
 
