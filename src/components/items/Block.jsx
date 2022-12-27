@@ -1,5 +1,6 @@
 import React from "react";
 import Draggable from "react-draggable";
+import { Rnd } from "react-rnd";
 import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
@@ -30,8 +31,6 @@ function Block({ width, height, onPage = false, itemIdx, position, properties })
     boxShadow: `0 0 15px green`,
   };
 
-  const dragHandlers = {};
-
   const handleClick = () => {
     const newBlock = {
       type: ItemTypes.Block,
@@ -53,26 +52,34 @@ function Block({ width, height, onPage = false, itemIdx, position, properties })
   const handleDrag = (e, ui) => {
     setItems((prev) => {
       prev[itemIdx].position = {
-        x: position.x + ui.x / layout.cellWidth,
-        y: position.y + ui.y / layout.cellHeight,
+        x: position?.x + ui.x / layout.cellWidth,
+        y: position?.y + ui.y / layout.cellHeight,
       };
       return prev;
     });
   };
 
+  const handleResize = (e, uie, direction, ref, delta, position) => {
+    setItems((prev) => {
+      prev[itemIdx].size = {
+        x: width / layout.cellWidth + (ref.width) / layout.cellWidth,
+        y: height / layout.cellHeight +(ref.height) / layout.cellHeight,
+      };
+      return prev;
+    });
+  }
+
   return onPage ? (
-    <Draggable
+    <Rnd
       bounds="parent"
-      grid={[layout.cellWidth, layout.cellHeight]}
-      {...dragHandlers}
-      onDrag={handleDrag}
-    >
+      style={{ ...dragStyle, ...(itemIdx === selectedItem ? selectedStyle : {}) }}
+      onDragStop={handleDrag}
+      onResizeStop={handleResize}
+      >
       <div
-        className="block"
-        style={{ ...dragStyle, ...(itemIdx === selectedItem ? selectedStyle : {}) }}
-        onClick={handleOnPageClick}
+        style={style} onClick={handleOnPageClick}
       />
-    </Draggable>
+    </Rnd>
   ) : (
     <div className="block" style={style} onClick={handleClick} />
   );

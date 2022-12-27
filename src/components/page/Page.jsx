@@ -44,7 +44,7 @@ function Page() {
 
   const width = layout.numberOfColumns * layout.cellWidth;
   const height = layout.numberOfRows * layout.cellHeight;
-
+  console.log(items)
   const pageStyle = {
     position: "relative",
     overflow: "auto",
