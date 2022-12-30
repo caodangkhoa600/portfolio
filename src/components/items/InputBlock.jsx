@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Rnd } from "react-rnd";
 import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
@@ -21,7 +21,6 @@ function InputBlock({
   const style = {
     width,
     height,
-    display: "block",
     cursor: "pointer",
     ...{ ...DefaultItemData.Input, ...properties },
   };
@@ -80,8 +79,6 @@ function InputBlock({
     });
   };
 
-  const [showInput, setShowInput] = useState(false);
-
   return onPage ? (
     <Rnd
       style={{
@@ -95,25 +92,11 @@ function InputBlock({
         y: position?.y * layout.cellHeight,
       }}
     >
-      {showInput ? (
-        <input
-          style={style}
-          value={properties.text}
-          // onMouseDown={handleOnPageClick}
-          onBlur={() => setShowInput(false)}
-        />
-      ) : (
-        <span
-          onDoubleClick={() => {
-            setShowInput(true);
-            console.log("doublo clicked");
-          }}
-          style={style}
-          // onMouseDown={handleOnPageClick}
-        >
-          {properties.text}
-        </span>
-      )}
+      <input
+        style={style}
+        value={properties.text}
+        onMouseDown={handleOnPageClick}
+      />
     </Rnd>
   ) : (
     <input style={style} onClick={handleClick} />
