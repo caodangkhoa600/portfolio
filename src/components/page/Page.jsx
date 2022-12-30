@@ -10,7 +10,14 @@ import Link from "../items/Link";
 import Text from "../items/Text";
 import Divider from "../items/Divider";
 
-function getItemComponent(itemType, itemIdx, properties, size, position, layout) {
+function getItemComponent(
+  itemType,
+  itemIdx,
+  properties,
+  size,
+  position,
+  layout
+) {
   const props = {
     itemIdx,
     onPage: true,
@@ -44,7 +51,6 @@ function Page() {
 
   const width = layout.numberOfColumns * layout.cellWidth;
   const height = layout.numberOfRows * layout.cellHeight;
-  console.log(items)
   const pageStyle = {
     position: "relative",
     overflow: "auto",
@@ -59,7 +65,14 @@ function Page() {
   };
 
   const itemsToRender = items.map((item, i) => {
-    return getItemComponent(item.type, i, item.properties, item.size, item.position, layout);
+    return getItemComponent(
+      item.type,
+      i,
+      item.properties,
+      item.size,
+      item.position,
+      layout
+    );
   });
 
   return (

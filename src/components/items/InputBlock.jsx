@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Rnd } from "react-rnd";
 import { DefaultItemData, ItemTypes } from "../../constants";
 import useItemContext from "../../contexts/ItemContext";
 import usePropertyContext from "../../contexts/PropertyContext";
 
-function InputBlock({ width, height, onPage = false, itemIdx, position, properties }) {
+function InputBlock({
+  width,
+  height,
+  onPage = false,
+  itemIdx,
+  position,
+  properties,
+}) {
   const { setItems } = useItemContext();
   const { layout, selectedItem, setSelectedItem } = usePropertyContext();
 
@@ -14,6 +21,7 @@ function InputBlock({ width, height, onPage = false, itemIdx, position, properti
   const style = {
     width,
     height,
+    display: "block",
     cursor: "pointer",
     ...{ ...DefaultItemData.Input, ...properties },
   };
@@ -64,21 +72,48 @@ function InputBlock({ width, height, onPage = false, itemIdx, position, properti
       }
 
       if (direction.toLowerCase().includes("top")) {
-        prev[itemIdx].position.y = position.y - delta.height / layout.cellHeight;
+        prev[itemIdx].position.y =
+          position.y - delta.height / layout.cellHeight;
       }
 
       return JSON.parse(JSON.stringify(prev));
     });
   };
 
+  const [showInput, setShowInput] = useState(false);
+
   return onPage ? (
     <Rnd
-      style={{ ...dragStyle, ...(itemIdx === selectedItem ? selectedStyle : {}) }}
+      style={{
+        ...dragStyle,
+        ...(itemIdx === selectedItem ? selectedStyle : {}),
+      }}
       onDragStop={handleDrag}
       onResizeStop={handleResize}
-      position={{ x: position?.x * layout.cellWidth, y: position?.y * layout.cellHeight }}
+      position={{
+        x: position?.x * layout.cellWidth,
+        y: position?.y * layout.cellHeight,
+      }}
     >
-      <input style={style} value={properties.text} onMouseDown={handleOnPageClick} />
+      {showInput ? (
+        <input
+          style={style}
+          value={properties.text}
+          // onMouseDown={handleOnPageClick}
+          onBlur={() => setShowInput(false)}
+        />
+      ) : (
+        <span
+          onDoubleClick={() => {
+            setShowInput(true);
+            console.log("doublo clicked");
+          }}
+          style={style}
+          // onMouseDown={handleOnPageClick}
+        >
+          {properties.text}
+        </span>
+      )}
     </Rnd>
   ) : (
     <input style={style} onClick={handleClick} />
